@@ -45,8 +45,12 @@ static int __DBSelectLocation(const char *location, const DBConfig *db_config)
 {
     int result = 0;
     char sql_query[OS_SIZE_1024];
+    char *escaped_location = NULL;
 
     memset(sql_query, '\0', OS_SIZE_1024);
+
+    escaped_location = os_LoadString(escaped_location, location);
+    osdb_escapestr(escaped_location);
 
     /* Generate SQL */
     snprintf(sql_query, OS_SIZE_1024 - 1,
@@ -64,8 +68,12 @@ static int __DBSelectLocation(const char *location, const DBConfig *db_config)
 static int __DBInsertLocation(const char *location, const DBConfig *db_config)
 {
     char sql_query[OS_SIZE_1024];
+    char *escaped_location = NULL;
 
     memset(sql_query, '\0', OS_SIZE_1024);
+
+    escaped_location = os_LoadString(escaped_location, location);
+    osdb_escapestr(escaped_location);
 
     /* Generate SQL */
     snprintf(sql_query, OS_SIZE_1024 - 1,
