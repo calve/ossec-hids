@@ -202,7 +202,7 @@ int realtime_process()
 		/* Need a sleep here to avoid triggering on vim edits
   		 * (and finding the file removed)
   		 */
-		sleep(1);
+		/* sleep(1); */
 
                 realtime_checksumfile(final_name);
             }
@@ -314,7 +314,7 @@ int realtime_win32read(win32rtfim *rtlocald)
     if (rc == 0) {
         merror("%s: ERROR: Unable to set directory for monitoring: %s",
                ARGV0, rtlocald->dir);
-        sleep(2);
+        /* sleep(2); */
     }
 
     return (0);

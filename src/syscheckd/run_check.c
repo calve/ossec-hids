@@ -70,7 +70,7 @@ static void send_sk_db()
     create_db();
 
     /* Send scan ending message */
-    sleep(syscheck.tsleep + 10);
+    /* sleep(syscheck.tsleep + 1); */
 
     if (syscheck.dir[0]) {
         merror("%s: INFO: Ending syscheck scan (forwarding database).", ARGV0);
@@ -116,7 +116,7 @@ void start_daemon()
 
     /* Some time to settle */
     memset(curr_hour, '\0', 12);
-    sleep(syscheck.tsleep * 10);
+    /* sleep(syscheck.tsleep * 1); */
 
     /* If the scan time/day is set, reset the
      * syscheck.time/rootcheck.time
@@ -129,7 +129,7 @@ void start_daemon()
 
     /* Will create the db to store syscheck data */
     if (syscheck.scan_on_start) {
-        sleep(syscheck.tsleep * 15);
+        /* sleep(syscheck.tsleep * 1); */
         send_sk_db();
     } else {
         prev_time_rk = time(0);
@@ -137,7 +137,7 @@ void start_daemon()
 
     /* Before entering in daemon mode itself */
     prev_time_sk = time(0);
-    sleep(syscheck.tsleep * 10);
+    /* sleep(syscheck.tsleep * 1); */
 
     /* If the scan_time or scan_day is set, we need to handle the
      * current day/time on the loop.
@@ -229,9 +229,9 @@ void start_daemon()
         if (((curr_time - prev_time_sk) > syscheck.time) || run_now) {
             if (syscheck.scan_on_start == 0) {
                 /* Need to create the db if scan on start is not set */
-                sleep(syscheck.tsleep * 10);
+                /* sleep(syscheck.tsleep * 1); */
                 send_sk_db();
-                sleep(syscheck.tsleep * 10);
+                /* sleep(syscheck.tsleep * 1); */
 
                 syscheck.scan_on_start = 1;
             } else {
@@ -249,7 +249,7 @@ void start_daemon()
             }
 
             /* Send scan ending message */
-            sleep(syscheck.tsleep + 20);
+            /* sleep(syscheck.tsleep + 0); */
             if (syscheck.dir[0]) {
                 merror("%s: INFO: Ending syscheck scan.", ARGV0);
                 send_rootcheck_msg("Ending syscheck scan.");
@@ -275,14 +275,14 @@ void start_daemon()
                              NULL, NULL, &selecttime);
             if (run_now < 0) {
                 merror("%s: ERROR: Select failed (for realtime fim).", ARGV0);
-                sleep(SYSCHECK_WAIT);
+                /* sleep(SYSCHECK_WAIT); */
             } else if (run_now == 0) {
                 /* Timeout */
             } else if (FD_ISSET (syscheck.realtime->fd, &rfds)) {
                 realtime_process();
             }
         } else {
-            sleep(SYSCHECK_WAIT);
+            /* sleep(SYSCHECK_WAIT); */
         }
 #elif defined(WIN32)
         if (syscheck.realtime && (syscheck.realtime->fd >= 0)) {

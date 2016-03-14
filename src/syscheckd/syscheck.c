@@ -49,8 +49,8 @@ void init_magic(magic_t *cookie_ptr)
 /* Read syscheck internal options */
 static void read_internal(int debug_level)
 {
-    syscheck.tsleep = (unsigned int) getDefine_Int("syscheck", "sleep", 0, 64);
-    syscheck.sleep_after = getDefine_Int("syscheck", "sleep_after", 1, 9999);
+    syscheck.tsleep = 1;
+    syscheck.sleep_after = 1;
 
     /* Check current debug_level
      * Command line setting takes precedence
@@ -149,7 +149,7 @@ int Start_win32_Syscheck()
     verbose(STARTUP_MSG, ARGV0, getpid());
 
     /* Some sync time */
-    sleep(syscheck.tsleep + 10);
+    sleep(syscheck.tsleep);
 
     /* Wait if agent started properly */
     os_wait();
@@ -273,17 +273,17 @@ int main(int argc, char **argv)
     }
 
     /* Initial time to settle */
-    sleep(syscheck.tsleep + 2);
+    /* sleep(syscheck.tsleep + 2); */
 
     /* Connect to the queue */
     if ((syscheck.queue = StartMQ(DEFAULTQPATH, WRITE)) < 0) {
         merror(QUEUE_ERROR, ARGV0, DEFAULTQPATH, strerror(errno));
 
-        sleep(5);
+        sleep(1);
         if ((syscheck.queue = StartMQ(DEFAULTQPATH, WRITE)) < 0) {
             /* more 10 seconds of wait */
             merror(QUEUE_ERROR, ARGV0, DEFAULTQPATH, strerror(errno));
-            sleep(10);
+            /* sleep(10); */
             if ((syscheck.queue = StartMQ(DEFAULTQPATH, WRITE)) < 0) {
                 ErrorExit(QUEUE_FATAL, ARGV0, DEFAULTQPATH);
             }
@@ -348,7 +348,7 @@ int main(int argc, char **argv)
     }
 
     /* Some sync time */
-    sleep(syscheck.tsleep + 10);
+    /* sleep(syscheck.tsleep + 1); */
 
     /* Start the daemon */
     start_daemon();

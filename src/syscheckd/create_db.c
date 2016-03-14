@@ -232,7 +232,7 @@ static int read_file(const char *file_name, int opts, OSMatch *restriction)
 
         /* Sleep here too */
         if (__counter >= (syscheck.sleep_after)) {
-            sleep(syscheck.tsleep);
+            /* sleep(syscheck.tsleep); */
             __counter = 0;
         }
         __counter++;
